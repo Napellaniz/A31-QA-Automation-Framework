@@ -40,10 +40,10 @@ public class BaseTest {
         LoginTests.driver.quit();
     }
 
-//    protected static void navigateToPage() {
-//        String url = "https://bbb.testpro.io/";
-//        driver.get(url);
-//    }
+    protected static void navigateToPage() {
+        String url = "https://bbb.testpro.io/";
+        driver.get(url);
+    }
 
     public static void login(String email, String password) {
         provideEmail(email);
@@ -97,6 +97,37 @@ public class BaseTest {
 
     }
 
+    public void choosePlaylist (String playlistName) throws InterruptedException {
+        WebElement playlistNameElement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//section[@id='songResultsWrapper']//section/ul/li[contains(text(),'Test Pro Playlist')]")));
+        playlistNameElement.click();
+    }
+
+
+    public boolean isNotificationPopUpPresent() {
+        WebElement notificationText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.success.show")));
+        return notificationText.isDisplayed();
+    }
+
+    public void searchSong(String songTitleKeyword) throws InterruptedException {
+        WebElement searchField = wait.until(ExpectedConditions.visibilityOfElementLocated((By.cssSelector("div#searchForm input[type=search]"))));
+        searchField.sendKeys(songTitleKeyword);
+    }
+
+    public void viewAllSearchResults() throws InterruptedException {
+        WebElement viewAllSearchResults = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.results section.songs h1 button")));
+        viewAllSearchResults.click();
+    }
+
+    public void viewAllFirstSongResult() throws InterruptedException {
+        WebElement viewAllFirstSongResult = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("section#songResultsWrapper tr.song-item td.title")));
+        viewAllFirstSongResult.click();
+    }
+
+    public void clickAddToButton() throws InterruptedException {
+        WebElement addTo = driver.findElement(By.cssSelector("button.btn-add-to"));
+        addTo.click();
+        Thread.sleep(2000);
+    }
     @DataProvider(name="incorrectLoginProviders")
     public static Object[][] getDataFromDataproviders() {
 
