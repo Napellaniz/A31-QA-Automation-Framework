@@ -32,7 +32,7 @@ public class BaseTest {
 
     public FluentWait fluentWait = null;
     public Actions actions = null;
-    public ThreadLocal<WebDriver> threadLocal = null;
+    public ThreadLocal<WebDriver> threadDriver = null;
 
 
 //    @BeforeSuite
@@ -40,32 +40,32 @@ public class BaseTest {
 ////        WebDriverManager.firefoxdriver().setup();
 //    }
 
-//    @BeforeMethod
-    @Before
-    @Parameters({"BaseURL"})
-    public void launchBrowser(String BaseURL) throws MalformedURLException {
-        url = BaseURL;
-        threadLocal = new ThreadLocal<>();
-        driver = pickBrowser(System.getProperty("browser"));
-        threadLocal.set(driver);
+    @BeforeMethod
 
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
+    public void launchBrowser(String BaseURL) throws MalformedURLException {
+        BaseURL = "https://bbb.testpro.io";
+        driver = pickBrowser(System.getProperty("browser"));
+
+        threadDriver = new ThreadLocal<>();
+        threadDriver.set(driver);
+
         actions = new Actions(getDriver());
-//        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        getDriver().manage().window().maximize();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        url = BaseURL;
         getDriver().get(url);
 
     }
 
     public WebDriver getDriver() {
-        return threadLocal.get();
+        return threadDriver.get();
     }
 
 //    @AfterMethod
     @After
     public void closeBrowser() {
         getDriver().quit();
-        threadLocal.remove();
+        threadDriver.remove();
     }
 
     public WebDriver pickBrowser(String browser) throws MalformedURLException {
@@ -97,16 +97,17 @@ public class BaseTest {
     }
 
     public WebDriver lambdaTest() throws MalformedURLException {
-
+        String username = "natalie.apellaniz";
+        String authkey = "NXdTqR7ZqR7NmWNXEqIUPD1PvSHUUlRiNFno58GdRUnJ2XWoKe";
         String hubURL = "https://hub.lambdatest.com/wd/hub";
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("browserName", "Firefox");
-        capabilities.setCapability("browserVersion", "107.0");
+        capabilities.setCapability("browserName", "Window 10");
+        capabilities.setCapability("browserVersion", "108.0");
         HashMap<String, Object> ltOptions = new HashMap<String, Object>();
-        ltOptions.put("user", "khaledoni01");
-        ltOptions.put("accessKey", "Zx0HIXlEJ9ERHjcH9UDCvNXRoiSm2si9VM3L6Dii3SX6W1GPF4");
-        ltOptions.put("build", "Selenium 4");
+        ltOptions.put("user", "natalie.apellaniz");
+        ltOptions.put("accessKey", "NXdTqR7ZqR7NmWNXEqIUPD1PvSHUUlRiNFno58GdRUnJ2XWoKe");
+        ltOptions.put("build", "TestNG With Java");
         ltOptions.put("name", this.getClass().getName());
         ltOptions.put("platformName", "Windows 10");
         ltOptions.put("seCdp", true);
